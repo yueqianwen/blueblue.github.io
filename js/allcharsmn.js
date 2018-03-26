@@ -8,11 +8,12 @@ var global_isdoing = false;
 var global_isshow_latincode = false; // 是否显示latincode
 var global_ismouseover = false; //鼠标经过是否起效
 //通用初始化
+
 function doInitializeForAllchars() {
 	/**
     //根据网址参数确定界面语言
     var urlrequest = GetRequest();
-    var urllang = "mn_rcn";
+    var urllang = "en_rus";
     if(urllang=='zh_rcn'){//中文
       global_now_uilanguage = 'zh_rcn';
       global_def_rulelanguage = ['mn_rcn'];
@@ -39,16 +40,6 @@ function doInitializeForAllchars() {
 	doInitializeDefautCheck();
     //初始化字符
     doInitializeLoadChars(false,all_char_list.editstate);
-    //弹出画面：规则统计
-    $('#webtitle_ver').click(onClickOpenTotal);
-    $('#total_closedialog_btn').click(onClickCloseTotal);
-    //弹出画面：导出文件
-    $('#uiid_btn_printfile').click(onOpenPrintFile);
-    $('#printfile_closedialog_btn').click(onClosePrintFile);
-    $('#printfile_print_btn').click(onClickPrintFile);
-    //初始化版本选择框
-    doInitializeSelectVersion();
-    //初始化结束
     return true;
 };
 //初始化固定的界面语言：转换规则，描述语言，规则语言，版本，全部打开，全部关闭，导出文件
@@ -126,6 +117,7 @@ function doSetIdleState(){
   global_isdoing = false;
   doShowBusyDialog(false);
 };
+
 //过滤显示语言内容事件
 function onSearchCharClick(){
   if(doCheckBusyState(false)){
@@ -140,7 +132,6 @@ function doSearchChar(){
 	//初始化
 	var gzyy = getCheckBoxValue('gzyy');
 	var msyy = getCheckBoxValue('msyy');
-	
 	//描述语言
 	if(msyy == 0){//没有任何语言被选中
 		$("#mn_gzjs_title,#mn_gzjs_content,#mn_gzjs_img").removeClass("display_hide");
@@ -188,7 +179,6 @@ function doShowAllChar(){
 	$("#allcharstable table").show();
 	$("#allcharstable table tbody").show();
 	$("img[id^='charletters_img']").attr('src','./image/allclose.png');
-	
 	doSetIdleState();
 };
 
@@ -267,7 +257,6 @@ function doShowCharTable(flag,id){
 		}
 	}
 }
-
 //切换语言：内容语言
 function doRefreshDataBody(id,uiid){
 	var oid = $('#' + id);
@@ -382,16 +371,13 @@ function doInitializeLoadChars(isFromFirstCreate){
 			   if(v.isolate.length >=1){
 			   	   	tablehtml += 
 				   				 "<tr>" +
-						    		"<td colspan=9 class='deformations'>" +
-						    		/** 
-											"<a href='javascript:void(0)' onclick='doShowCharTable(1," + i +")'><img src='./image/lineopen.png' class='deformationstop_img' id='topisolate_img" + i + "'/></a>" + 
-											"<a href='topology.php?unicode=" + v.unicode + "&position=isolate' class='pologyhref' target='_blank'>
-											*/
+						    		"<td colspan=9 class='deformations'>" + 
+											
 											"<span id='uiid_lbl_dulixingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_dulixingshi') + "</span></a>" + 
 											"<span class='deformations_count'>（" + v.isolate.length + "）</span>" + 
 											/**
 											"<a href='javascript:void(0)' onclick='doShowCharTable(1," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottomisolate_img" + i + "'/></a>" + 
-									*/
+								*/
 									"</td>" +
 						    	 "</tr>" +
 								 "<tbody id='chartableisolate" + i + "' style='display:table-row-group'>" +
@@ -406,8 +392,8 @@ function doInitializeLoadChars(isFromFirstCreate){
 				    				 "<tr class='singleshowguize'>" +
 				    					"<td class='title_dlrule' colspan=2><span id='uiid_lbl_dulixianshiguize' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_dulixianshiguize') + "</span></td>" +
 				    					"<td class='content_dlruleindex font_blue' colspan=1>"  + vv.ruleindex + "</td>" + 
-				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" + 
-				    					/**
+				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" +
+				    					/** 
 				    					"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='-1' rulefiled='-1' charcode='" + v.unicode + "' postype=0 ruletype=0 bxno='" + vv.bianxingno + "' ruleno=0 src='./image/editit.png'/></td>" +
 				    				 */
 				    				 "</tr>" +
@@ -453,7 +439,7 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    				"<tr>" +
 			    		    					"<td rowspan=4 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
 				    		    			"<tr>" +
-			    		    					"<td rowspan=3 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
+			    		    					//"<td rowspan=3 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
 			    		    					"<td class='td_heightdefault title_mn " + mn_displaygznr + "' id='mn_gznr_title'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal " + mn_displaygznr + "' id='mn_gznr_content'>" + getconvertedtext('mn_rcn',vvv.rulevalue) + "</td>" +
 			    		    					/**
@@ -494,10 +480,9 @@ function doInitializeLoadChars(isFromFirstCreate){
 						    		"<td colspan=9 class='deformations'>" + 
 						    		/**
 										"<a href='javascript:void(0)' onclick='doShowCharTable(2," + i +")'><img src='./image/lineopen.png' class='deformationstop_img' id='topinitial_img" + i + "'/></a>" + 
-										"<a href='topology.php?unicode=" + v.unicode + "&position=initial' class='pologyhref' target='_blank'>
-										*/
+									*/
 										"<span id='uiid_lbl_cishouxingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_cishouxingshi') + "</span></a>" + 
-										"<span class='deformations_count'>（" + v.initial.length + "）</span>" + 
+										"<span class='deformations_count'>（" + v.initial.length + "）</span>" +
 										/**
 										"<a href='javascript:void(0)' onclick='doShowCharTable(2," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottominitial_img" + i + "'/></a>" + 
 									*/
@@ -515,8 +500,8 @@ function doInitializeLoadChars(isFromFirstCreate){
 				    				 "<tr class='singleshowguize'>" +
 				    					"<td class='title_dlrule' colspan=2><span id='uiid_lbl_dulixianshiguize' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_dulixianshiguize') + "</span></td>" +
 				    					"<td class='content_dlruleindex font_blue' colspan=1>"  + vv.ruleindex + "</td>" + 
-				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" +
-				    					/** 
+				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" + 
+				    					/**
 				    					"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='-1' rulefiled='-1' charcode='" + v.unicode + "' postype=1 ruletype=0 bxno='" + vv.bianxingno + "' ruleno=0 src='./image/editit.png'/></td>" +
 				    				 */
 				    				 "</tr>" +
@@ -589,9 +574,8 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    					"<td class='content_mn mongolnormal'>" + getconvertedtext('mn_rcn',vvv.rulesample) +"</td>" +
 			    		    					/**
 			    		    					"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=7 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			   
 			    		    				*/
-			    		    			"</tr>";
+			    		    				"</tr>";
 						});
 				    });
 					tablehtml += "</tbody>";
@@ -604,7 +588,6 @@ function doInitializeLoadChars(isFromFirstCreate){
 						    		"<td colspan=9 class='deformations'>" + 
 						    		/**
 										"<a href='javascript:void(0)' onclick='doShowCharTable(3," + i +")'><img src='./image/lineopen.png' class='deformationstop_img' id='topmedial_img" + i + "'/></a>" + 
-										"<a href='topology.php?unicode=" + v.unicode + "&position=medial' class='pologyhref' target='_blank'>
 									*/
 										"<span id='uiid_lbl_cizhongxingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_cizhongxingshi') + "</span></a>" + 
 										"<span class='deformations_count'>（" + v.medial.length + "）</span>" + 
@@ -625,8 +608,8 @@ function doInitializeLoadChars(isFromFirstCreate){
 				    				 "<tr class='singleshowguize'>" +
 				    					"<td class='title_dlrule' colspan=2><span id='uiid_lbl_dulixianshiguize' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_dulixianshiguize') + "</span></td>" +
 				    					"<td class='content_dlruleindex font_blue' colspan=1>"  + vv.ruleindex + "</td>" + 
-				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" +
-				    					/** 
+				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" + 
+				    					/**
 				    					"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='-1' rulefiled='-1' charcode='" + v.unicode + "' postype=2 ruletype=0 bxno='" + vv.bianxingno + "' ruleno=0 src='./image/editit.png'/></td>" +
 				    				*/
 				    				 "</tr>" +
@@ -713,11 +696,12 @@ function doInitializeLoadChars(isFromFirstCreate){
 						    		"<td colspan=9 class='deformations'>" + 
 						    		/**
 										"<a href='javascript:void(0)' onclick='doShowCharTable(4," + i +")'><img src='./image/lineopen.png' class='deformationstop_img' id='topfinal_img" + i + "'/></a>" + 
-										"<a href='topology.php?unicode=" + v.unicode + "&position=final' class='pologyhref' target='_blank'>
-										*/
+									*/
+								
+
 										"<span id='uiid_lbl_cimoxingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_cimoxingshi') + "</span></a>" + 
-										"<span class='deformations_count'>（" + v.final.length + "）</span>" + 
-										/**
+										"<span class='deformations_count'>（" + v.final.length + "）</span>" +
+										/** 
 										"<a href='javascript:void(0)' onclick='doShowCharTable(4," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottomfinal_img" + i + "'/></a>" + 
 									*/
 									"</td>" +
@@ -734,8 +718,8 @@ function doInitializeLoadChars(isFromFirstCreate){
 				    				 "<tr class='singleshowguize'>" +
 				    					"<td class='title_dlrule' colspan=2><span id='uiid_lbl_dulixianshiguize' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_dulixianshiguize') + "</span></td>" +
 				    					"<td class='content_dlruleindex font_blue' colspan=1>"  + vv.ruleindex + "</td>" + 
-				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" +
-				    					/** 
+				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" + 
+				    					/**
 				    					"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='-1' rulefiled='-1' charcode='" + v.unicode + "' postype=3 ruletype=0 bxno='" + vv.bianxingno + "' ruleno=0 src='./image/editit.png'/></td>" +
 				    				*/
 				    				 "</tr>" +
@@ -819,7 +803,6 @@ function doInitializeLoadChars(isFromFirstCreate){
 		});
     tablehtml += "</td></tr></table>";
     allcharframe.append(tablehtml);
-   
     //////////绑定事件//////////
     var tablechoose = $('.charchoose,.charletter,.title_czrule,.title_dlrule,.numbercharno,.content_dlruleindex,.content_czruleindex,.title_rule,.title_mn,.title_zh,.title_en,.content_mn,.content_zh,.content_en,.content_rules');//表格变形区域
     //背景色变换:点击
@@ -859,18 +842,6 @@ function doInitializeLoadChars(isFromFirstCreate){
 		onKeyDown(event);
 	});
 }
-
-//编辑图标 打开 Dialog
-//charindex = 字母下标（数字）
-//ruleindex = 规则下标（数字）
-//rulefiled = 1（规则解释-蒙文），2（规则解解释-中文），3（规则解释-英文）
-//            4（规则内容-蒙文），5（规则内容-中文），6（规则内容-英文）
-//            7（规则举例）
-//charcode='180a'
-//postype=0（独立）,1（词首）,2（词中）,3（词末）
-//ruletype=0(独立显示规则),1（词中显示规则）
-//bxno=12(变形编号)
-//ruleno=12(规则编号)
 function doClickEditRuleButton(){
     if(doCheckBusyState(false)){
       doDialogInformation(getlanguagetext(global_now_uilanguage,'uiid_txt_nowisdoing'), '系统提示');
@@ -1003,7 +974,12 @@ function doClickEditRuleButton(){
     //更新验证码
     onClickCreateCode();
 }
-
+/**
+//关闭意见反馈Dialog
+function onClickClosePublishproposal(){
+    $('#publishproposal_dialog_display').dialog('close');
+}
+*/
 //返回规则编号颜色
 function getRuleIDColor(item){
   if(item.isexcluderule == '1') {
@@ -1014,7 +990,6 @@ function getRuleIDColor(item){
       return 'font_blue';
   };
 }
-
 //按钮事件：意见反馈
 function onClickSendPubLish(){
 	//判断是否重复进入
@@ -1022,18 +997,15 @@ function onClickSendPubLish(){
 		doDialogInformation(getlanguagetext(global_now_uilanguage,'uiid_txt_nowisdoing'), '系统提示');
 		return;
 	};
-	
 	//与服务器通信
 	var unicoce   = dialogcontent.attr("unicoce");
 	var bxno      = dialogcontent.attr("bxno");
 	var gzno      = dialogcontent.attr("gzno");;
 	var isduli    = dialogcontent.attr("isduli");
 	$.ajax({
-		
 	    type:'post',
 	    dataType:'json',
 	    data:{version:all_char_list.version,unicoce:unicoce,bxno:bxno,gzno:gzno,isduli:isduli,useralias:useralias,usermail:usermail,usertext:usertext,capcode:capcode},
-	   
 	});
 }
 
@@ -1182,7 +1154,6 @@ function doShowBusyDialog(ishow) {
         global_spinner.stop();
     };
 };
-
 //获取网址参数数组
 function GetRequest(){
   var url = location.search;
@@ -1196,7 +1167,6 @@ function GetRequest(){
   }
   return theRequest; 
 };
-
 //初始化CheckBox默认值
 function doInitializeDefautCheck(){
 	//规则语言
