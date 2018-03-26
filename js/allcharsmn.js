@@ -453,7 +453,7 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    				"<tr>" +
 			    		    					"<td rowspan=4 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
 				    		    			"<tr>" +
-			    		    					//"<td rowspan=3 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
+			    		    					"<td rowspan=3 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
 			    		    					"<td class='td_heightdefault title_mn " + mn_displaygznr + "' id='mn_gznr_title'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal " + mn_displaygznr + "' id='mn_gznr_content'>" + getconvertedtext('mn_rcn',vvv.rulevalue) + "</td>" +
 			    		    					/**
