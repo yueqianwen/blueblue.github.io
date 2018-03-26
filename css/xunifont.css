@@ -1,0 +1,151 @@
+/***********************************************************************************************
+* 
+* ç”¨äºŽç•Œé¢è¦ç´ çš„é€šç”¨æ ·å¼åç§°
+* èŒƒå›´ï¼šé€šç”¨
+* 
+************************************************************************************************/
+a{text-decoration:none;}
+
+.uivertical {
+	writing-mode: tb-lr;
+	writing-mode: vertical-lr;
+    -moz-writing-mode: vertical-lr;
+	-webkit-writing-mode: vertical-lr;
+	-ms-writing-mode: tb-lr;
+}
+
+.mongolnormal{
+	font-family: "Mongol Qagan MenkCode For Rule",å®‹ä½“, SimSun, arial, helvetica, sans-serif;
+	text-orientation: sideways-right;
+	-webkit-text-orientation: sideways-right;
+	font-size: 18px;
+}
+
+/*é™æ€é¡µé¢*/
+.headerframework{
+}
+.allframework{
+	padding:50px 7% 0 ;
+	border:0px solid #000;
+}
+.leftframework{
+	float:left;
+	border:0px solid red;
+	width:74%;
+	word-wrap: break-word;
+}
+.rightframework{
+	font-family: "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	float:left;
+	border-left:0px solid #ccc;
+	width:25%;
+	line-height:2.3;
+	font-size:14px;
+}
+.rightframework div{
+	margin-left:20%;
+}
+.rightframework div a{
+	color:teal;
+	margin-left:15px;
+}
+.all_links{
+	padding:100px 0;
+	min-width:200px;
+	border-left:2px dotted #005a9c;
+}
+.lheader{
+	margin-bottom:40px;
+	font-size:35px;
+	color:#005a9c;
+}
+.rcontent,
+.lcontent{
+	font-family: "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	margin-top:20px;
+	margin-bottom:10px;
+	color:#666;
+	line-height:2;
+}
+.rcontent{
+	text-indent:2em;
+}
+.linkhref{
+	color:teal;
+}
+.list_title{
+	color:#005a9c;
+}
+.list_content{
+	color:#666;
+}
+.eu_dialog{
+	width:300px;
+	height:70px;
+	padding:5px !important;
+	line-height:1.7;
+	font-family: "Microsoft Yahei","Mongol Qagan MenkCode For Rule","Helvetica Neue",å®‹ä½“, Helvetica,SimSun, Arial,arial, sans-serif;
+	font-size:14px !important;
+}
+.mongolfont_size{
+	font-size:18px;
+}
+.dagabvri_title{
+	font-family: "Mongol Qagan MenkCode For Rule",å®‹ä½“, SimSun, arial, helvetica, sans-serif;
+	font-size:24px;
+}
+.dagabvri_list{
+	font-family: "Mongol Qagan MenkCode For Rule",å®‹ä½“, SimSun, arial, helvetica, sans-serif;
+	font-size:24px;
+	line-height:120%;
+}
+.font_size_18{
+	font-size:18px;
+}
+.font_size_21{
+	font-size:20px;
+}
+.font_size_24{
+	font-size:24px;
+}
+
+/*æ‰‹æœºç‰ˆè‡ªé€‚åº”*/
+@media only screen and (max-width: 750px){
+	.allframework{
+		padding-top:30px;
+	}
+	.lheader{
+		margin-bottom:20px;
+	}
+	.leftframework,
+	.rightframework{
+		float:none;
+		width:100%;
+	}
+	
+	.rightframework{
+		line-height:2;
+	}
+	.rightframework div a{
+		margin-left:5px;
+	}
+	.border_line{
+		margin-bottom:5px;
+		border-bottom:0px solid #ccc;
+	}
+	.all_links{
+		padding:0;
+		border:0px;
+		border-top:1px solid #ccc;
+		margin-top:30px;
+	}
+	.rightframework div{
+		margin-left:0px;
+	}
+	.en_publishproposal_dialog{
+		max-width:450px;
+	}
+	.en_total_dialog{
+		width:300px;
+	}
+}

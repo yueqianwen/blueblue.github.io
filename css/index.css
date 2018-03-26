@@ -1,0 +1,63 @@
+.header{
+	background-color: #c0c0c0;
+	margin:0 auto; width:400px; height:550px; 
+	border:2px solid #00F;
+}
+.header_navi{
+	margin:0 auto;
+	width: 400px;
+	height: 150px;
+	
+    text-align:center;
+    padding-top: 50px;
+
+
+	
+}
+.mongolnormal{
+	
+	font-family: "Mongol Qagan MenkCode For Rule",å®‹ä½“, SimSun, arial, helvetica, sans-serif;
+	text-orientation: sideways-right;
+	-webkit-text-orientation: sideways-right;
+	font-size: 30px;
+
+	margin:0 auto;
+	width: 400px;
+	height: 100px;
+	
+	text-align:center;
+
+	
+}
+.Chinise{
+	margin:0 auto;
+	width: 400px;
+	height: 100px;
+	
+	text-align:center;
+
+
+	
+}
+.English{
+	margin:0 auto;
+	width: 400px;
+	height: 100px;
+	
+	text-align:center;
+
+}
+.mn h1{
+
+
+	
+}
+.Chinise h1{
+		
+}
+.English h1{
+	
+}
+a:link,a:visited{
+	text-decoration:none;
+}

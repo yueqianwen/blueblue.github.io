@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "Mongol Qagan MenkCode For Rule";
+  src: url('./MongolQaganMenkCodeForRule.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+.MongolQaganMenkCode {
+  font-family:"Mongol Qagan MenkCode For Rule",å®‹ä½“, SimSun, arial, helvetica, sans-serif;
+  text-orientation: sideways-right;
+  -webkit-text-orientation: sideways-right;
+}
