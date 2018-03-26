@@ -28,6 +28,9 @@ function doInitializeForAllchars() {
       global_def_desclanguage = ['en_rus'];
     };
     */
+//弹出画面：规则统计
+    $('#webtitle_ver').click(onClickOpenTotal);
+    $('#total_closedialog_btn').click(onClickCloseTotal);
     //初始化界面语言
     doInitFaceWordFix();
     //初始化：事件绑定
