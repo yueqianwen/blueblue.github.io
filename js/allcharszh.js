@@ -385,15 +385,11 @@ function doInitializeLoadChars(isFromFirstCreate){
 			   	   	tablehtml += 
 				   				 "<tr>" +
 						    		"<td colspan=9 class='deformations'>" + 
-						    		/**
 											"<a href='javascript:void(0)' onclick='doShowCharTable(1," + i +")'><img src='./image/lineopen.png' class='deformationstop_img' id='topisolate_img" + i + "'/></a>" + 
-											"<a href='topology.php?unicode=" + v.unicode + "&position=isolate' class='pologyhref' target='_blank'>
-											*/
-											"<span id='uiid_lbl_dulixingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_dulixingshi') + "</span></a>" + 
+											//"<a href='topology.php?unicode=" + v.unicode + "&position=isolate' class='pologyhref' target='_blank'>
+											"<span id='uiid_lbl_dulixingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_dulixingshi') + "</span>" + 
 											"<span class='deformations_count'>（" + v.isolate.length + "）</span>" + 
-											/**
-											"<a href='javascript:void(0)' onclick='doShowCharTable(1," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottomisolate_img" + i + "'/></a>" + 
-									*/
+											//"<a href='javascript:void(0)' onclick='doShowCharTable(1," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottomisolate_img" + i + "'/></a>" + 
 									"</td>" +
 						    	 "</tr>" +
 								 "<tbody id='chartableisolate" + i + "' style='display:table-row-group'>" +
@@ -494,15 +490,11 @@ function doInitializeLoadChars(isFromFirstCreate){
 				if(v.initial.length >=1){
 					tablehtml += "<tr>" + 
 						    		"<td colspan=9 class='deformations'>" + 
-						    		/**
 										"<a href='javascript:void(0)' onclick='doShowCharTable(2," + i +")'><img src='./image/lineopen.png' class='deformationstop_img' id='topinitial_img" + i + "'/></a>" + 
-										"<a href='topology.php?unicode=" + v.unicode + "&position=initial' class='pologyhref' target='_blank'>
-										*/
-										"<span id='uiid_lbl_cishouxingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_cishouxingshi') + "</span></a>" + 
+										//"<a href='topology.php?unicode=" + v.unicode + "&position=initial' class='pologyhref' target='_blank'>
+										"<span id='uiid_lbl_cishouxingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_cishouxingshi') + "</span>" + 
 										"<span class='deformations_count'>（" + v.initial.length + "）</span>" + 
-										/**
-										"<a href='javascript:void(0)' onclick='doShowCharTable(2," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottominitial_img" + i + "'/></a>" + 
-									*/
+										//"<a href='javascript:void(0)' onclick='doShowCharTable(2," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottominitial_img" + i + "'/></a>" + 
 									"</td>" +
 						    	 "</tr>" +
 								 "<tbody id='chartableinitial" + i + "' style='display:table-row-group'>" +
@@ -603,15 +595,11 @@ function doInitializeLoadChars(isFromFirstCreate){
 				if(v.medial.length >=1){
 					tablehtml += "<tr>" + 
 						    		"<td colspan=9 class='deformations'>" + 
-						    		/**
 										"<a href='javascript:void(0)' onclick='doShowCharTable(3," + i +")'><img src='./image/lineopen.png' class='deformationstop_img' id='topmedial_img" + i + "'/></a>" + 
-										"<a href='topology.php?unicode=" + v.unicode + "&position=medial' class='pologyhref' target='_blank'>
-										*/
-										"<span id='uiid_lbl_cizhongxingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_cizhongxingshi') + "</span></a>" + 
-										"<span class='deformations_count'>（" + v.medial.length + "）</span>" +
-										/** 
-										"<a href='javascript:void(0)' onclick='doShowCharTable(3," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottommedial_img" + i + "'/></a>" + 
-									*/
+										//"<a href='topology.php?unicode=" + v.unicode + "&position=medial' class='pologyhref' target='_blank'>
+										"<span id='uiid_lbl_cizhongxingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_cizhongxingshi') + "</span>" + 
+										"<span class='deformations_count'>（" + v.medial.length + "）</span>" + 
+										//"<a href='javascript:void(0)' onclick='doShowCharTable(3," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottommedial_img" + i + "'/></a>" + 
 									"</td>" +
 						    	 "</tr>" +
 								 "<tbody id='chartablemedial" + i + "' style='display:table-row-group'>" +
@@ -712,15 +700,11 @@ function doInitializeLoadChars(isFromFirstCreate){
 				if(v.final.length >=1){
 					tablehtml += "<tr>" + 
 						    		"<td colspan=9 class='deformations'>" + 
-						    		/**
 										"<a href='javascript:void(0)' onclick='doShowCharTable(4," + i +")'><img src='./image/lineopen.png' class='deformationstop_img' id='topfinal_img" + i + "'/></a>" + 
-										"<a href='topology.php?unicode=" + v.unicode + "&position=final' class='pologyhref' target='_blank'>
-										*/
-										"<span id='uiid_lbl_cimoxingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_cimoxingshi') + "</span></a>" + 
+										//"<a href='topology.php?unicode=" + v.unicode + "&position=final' class='pologyhref' target='_blank'>
+										"<span id='uiid_lbl_cimoxingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_cimoxingshi') + "</span>" + 
 										"<span class='deformations_count'>（" + v.final.length + "）</span>" + 
-										/**
-										"<a href='javascript:void(0)' onclick='doShowCharTable(4," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottomfinal_img" + i + "'/></a>" + 
-									*/
+										//"<a href='javascript:void(0)' onclick='doShowCharTable(4," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottomfinal_img" + i + "'/></a>" + 
 									"</td>" +
 						    	 "</tr>" +
 								 "<tbody id='chartablefinal" + i + "' style='display:table-row-group'>" +
