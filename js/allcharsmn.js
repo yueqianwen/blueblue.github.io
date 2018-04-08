@@ -691,7 +691,7 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    			    "</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_mn " + mn_displaygzjs + "' id='mn_gzjs_title'>MN</td>" +
-			    		    					"<td rowspan=3 class='content_mn mongolnormal " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_content'>" + getconvertedtext('mn_rcn',vvv.description_mn_rcn)  + "</td>" +
+			    		    					"<td class='content_mn mongolnormal " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_content'>" + getconvertedtext('mn_rcn',vvv.description_mn_rcn)  + "</td>" +
 			    		    					//"<td class='content_img td_heightdefault " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_img'></td>" +
 			    		    				"</tr>" +
 			    		    				"<tr>" +
@@ -708,8 +708,8 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    					"<td rowspan=4 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
 				    		    			"<tr>" +
 			    		    					//"<td rowspan=3 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
-			    		    					"<td rowspan=3  class='td_heightdefault title_mn " + mn_displaygznr + "' id='mn_gznr_title'>MN</td>" +
-			    		    					"<td rowspan=3  class='content_mn mongolnormal " + mn_displaygznr + "' id='mn_gznr_content'>" + getconvertedtext('mn_rcn',vvv.rulevalue) + "</td>" +
+			    		    					"<td class='td_heightdefault title_mn " + mn_displaygznr + "' id='mn_gznr_title'>MN</td>" +
+			    		    					"<td class='content_mn mongolnormal " + mn_displaygznr + "' id='mn_gznr_content'>" + getconvertedtext('mn_rcn',vvv.rulevalue) + "</td>" +
 			    		    					//"<td class='content_img td_heightdefault " + mn_displaygznr + "' id='mn_gznr_img'></td>" +
 			    		    				"</tr>" +
 			    		    				"<tr>" +
