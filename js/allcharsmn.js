@@ -873,8 +873,8 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    					"<td rowspan=4 class='title_rule'><span id='uiid_lbl_guizejieshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizejieshi') + "</span></td>" +			    		    			 	
 			    		    			    "</tr>" +
 			    		    				"<tr>" +
-			    		    					"<td  class='td_heightdefault title_mn " + mn_displaygzjs + "' id='mn_gzjs_title'>MN</td>" +
-			    		    					"<td class='content_mn mongolnormal " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_content'>" + getconvertedtext('mn_rcn',vvv.description_mn_rcn)  + "</td>" +
+			    		    					"<td rowspan=3  class='td_heightdefault title_mn " + mn_displaygzjs + "' id='mn_gzjs_title'>MN</td>" +
+			    		    					"<td rowspan=3 class='content_mn mongolnormal " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_content'>" + getconvertedtext('mn_rcn',vvv.description_mn_rcn)  + "</td>" +
 			    		    					//"<td class='content_img td_heightdefault " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=1 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
 			    		    				"</tr>" +
 			    		    				"<tr>" +
