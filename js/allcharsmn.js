@@ -723,7 +723,7 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    					//"<td class='content_img td_heightdefault " + en_displaygznr + "' id='en_gznr_img'></td>" +
 			    		    				"</tr>" +
 			    		    				"<tr>" +
-			    		    					"<td class='title_rule'><span id='uiid_lbl_guizejuli' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizejuli') + "</span></td>" +
+			    		    					"<td rowspan=4 class='title_rule'><span id='uiid_lbl_guizejuli' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizejuli') + "</span></td>" +
 			    		    					"<td class='td_heightdefault title_mn'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal'>" + getconvertedtext('mn_rcn',vvv.rulesample) +"</td>" +
 			    		    					//"<td class='content_img td_heightdefault'></td>" +
@@ -906,7 +906,7 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    					//"<td class='content_img td_heightdefault " + en_displaygznr + "' id='en_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=6 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
 			    		    				"</tr>" +
 			    		    				"<tr>" +
-			    		    					"<td class='title_rule'><span id='uiid_lbl_guizejuli' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizejuli') + "</span></td>" +
+			    		    					"<td rowspan=4 class='title_rule'><span id='uiid_lbl_guizejuli' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizejuli') + "</span></td>" +
 			    		    					"<td class='td_heightdefault title_mn'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal'>" + getconvertedtext('mn_rcn',vvv.rulesample) +"</td>" +
 			    		    					//"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=7 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
