@@ -891,8 +891,8 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    					"<td rowspan=4 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
 				    		    			"<tr>" +
 			    		    					//"<td rowspan=3 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
-			    		    					"<td   class='td_heightdefault title_mn " + mn_displaygznr + "' id='mn_gznr_title'>MN</td>" +
-			    		    					"<td   class='content_mn mongolnormal " + mn_displaygznr + "' id='mn_gznr_content'>" + getconvertedtext('mn_rcn',vvv.rulevalue) + "</td>" +
+			    		    					"<td rowspan=3   class='td_heightdefault title_mn " + mn_displaygznr + "' id='mn_gznr_title'>MN</td>" +
+			    		    					"<td rowspan=3   class='content_mn mongolnormal " + mn_displaygznr + "' id='mn_gznr_content'>" + getconvertedtext('mn_rcn',vvv.rulevalue) + "</td>" +
 			    		    					//"<td class='content_img td_heightdefault " + mn_displaygznr + "' id='mn_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=4 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
 			    		    				"</tr>" +
 			    		    				"<tr>" +
@@ -901,8 +901,8 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    					//"<td class='content_img td_heightdefault " + zh_displaygznr + "' id='zh_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=5 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
 			    		    				"</tr>" +
 			    		    				"<tr>" +
-			    		    					"<td rowspan=3 class='td_heightdefault title_en " + en_displaygznr + "' id='en_gznr_title'>EN</td>" +
-			    		    					"<td rowspan=3 class='content_en mongolhorizontal " + en_displaygznr + "' id='en_gznr_content'>" + getconvertedtext('en_rus',vvv.rulevalue) + "</td>" +
+			    		    					"<td  class='td_heightdefault title_en " + en_displaygznr + "' id='en_gznr_title'>EN</td>" +
+			    		    					"<td  class='content_en mongolhorizontal " + en_displaygznr + "' id='en_gznr_content'>" + getconvertedtext('en_rus',vvv.rulevalue) + "</td>" +
 			    		    					//"<td class='content_img td_heightdefault " + en_displaygznr + "' id='en_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=6 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
 			    		    				"</tr>" +
 			    		    				"<tr>" +
