@@ -9,10 +9,9 @@ var global_isshow_latincode = false; // 是否显示latincode
 var global_ismouseover = false; //鼠标经过是否起效
 //通用初始化
 function doInitializeForAllchars() {
-	/**
     //根据网址参数确定界面语言
     var urlrequest = GetRequest();
-    var urllang = "mn_rcn";
+    var urllang = urlrequest['lang'];
     if(urllang=='zh_rcn'){//中文
       global_now_uilanguage = 'zh_rcn';
       global_def_rulelanguage = ['mn_rcn'];
@@ -26,7 +25,6 @@ function doInitializeForAllchars() {
       global_def_rulelanguage = ['en_rus'];
       global_def_desclanguage = ['en_rus'];
     };
-    */
     //初始化界面语言
     doInitFaceWordFix();
     //初始化：事件绑定
@@ -126,6 +124,80 @@ function doSetIdleState(){
   global_isdoing = false;
   doShowBusyDialog(false);
 };
+
+//按钮事件：切换语言
+function onChangeLanguageClick(lang){
+  if(doCheckBusyState(true)){
+    doDialogInformation(getlanguagetext(global_now_uilanguage,'uiid_txt_nowisdoing'), '系统提示');
+    return;
+  };
+  setTimeout('doChangeLanguage("'+lang+'")',200);
+}
+
+//按钮事件：切换语言
+function doChangeLanguage(lang){
+	var gotolang=global_now_uilanguage;
+	if(lang=='zh'){//切换到中文
+		gotolang='zh_rcn';
+	}else if (lang=='en'){//切换到英文
+		gotolang='en_rus';
+	}else if (lang=='mn'){//切换到蒙古文
+		gotolang='mn_rcn';
+	}else{//其他
+		gotolang=global_now_uilanguage;
+	};
+	var items=$("[uilang]");
+    $.each(items,function(index,dom){
+    	var item=$(dom);
+    	var id = item.attr('id');
+    	var label = getconvertedtext(gotolang,getlanguagetext(gotolang,id));
+    	item.html(label);
+    	//蒙古文CSS
+    	if(gotolang=='mn_rcn'){
+    		//检索条件标题
+    		if(id=='uiid_lbl_miaoshuyuyan' || id=='uiid_lbl_guizeyuyan' || id=='uiid_lbl_dataversion'){
+    			$('#uiid_lbl_miaoshuyuyan,#uiid_lbl_guizeyuyan,#uiid_lbl_dataversion').addClass('changelanguagemongol_searchtitle');
+    		}
+    		//按钮特殊处理
+    		if(id=='uiid_btn_search' || id=='uiid_btn_openallchar' || id=='uiid_btn_closeallchar'){
+    			$('#uiid_btn_search,#uiid_btn_openallchar,#uiid_btn_closeallchar').addClass('changelanguagemongol_btn');
+    		}
+    		items.addClass('changelanguagemongol');
+    	}else{
+    		$('#uiid_lbl_miaoshuyuyan,#uiid_lbl_guizeyuyan,#uiid_lbl_dataversion').removeClass('changelanguagemongol_searchtitle');
+    		$('#uiid_btn_search,#uiid_btn_openallchar,#uiid_btn_closeallchar').removeClass('changelanguagemongol_btn');
+    		items.removeClass('changelanguagemongol');
+    	}
+    	//英文CSS
+    	if(gotolang=='en_rus'){
+    	}else{
+    	}
+    	//中文CSS
+    	if(gotolang=='zh_rcn'){
+    	}else{
+    	}
+    });
+	global_now_uilanguage=gotolang;
+	//切换内容：
+	if(all_char_list.editstate == 1){//正在编辑
+		uiid = 'uiid_lbl_datastate_editing';
+	}else{//已经发布
+		uiid = 'uiid_lbl_datastate_released';
+	}
+	doRefreshDataBody('uiid_lbl_datastate_editstate',uiid);
+	//停止spin
+	doSetIdleState();
+};
+//点击checkbox按钮事件：保证至少有一个被选中
+function doClickCheckedCount(){
+	var self=$(this);
+	var parent = self.parents("td:first");
+	var num = parent.find(':checkbox:checked').length;
+	if(num<=0){
+		doDialogInformation(getlanguagetext(global_now_uilanguage,'uiid_txt_atleast_onelanguagechecked'), '系统提示');
+	};
+};
+
 //过滤显示语言内容事件
 function onSearchCharClick(){
   if(doCheckBusyState(false)){
@@ -140,7 +212,33 @@ function doSearchChar(){
 	//初始化
 	var gzyy = getCheckBoxValue('gzyy');
 	var msyy = getCheckBoxValue('msyy');
-	
+	//至少选择一种语言
+	if ((gzyy.length<=0)||(msyy.length<=0)){
+		doDialogInformation(getlanguagetext(global_now_uilanguage,'uiid_txt_atleast_onelanguagechecked'), '系统提示');
+		return;
+	};
+	//规则语言
+	if(gzyy.length<=0){//没有任何语言被选中
+		$("#mn_gznr_title,#mn_gznr_content,#mn_gznr_img").removeClass("display_hide");
+		$("#zh_gznr_title,#zh_gznr_content,#zh_gznr_img").removeClass("display_hide");
+		$("#en_gznr_title,#en_gznr_content,#en_gznr_img").removeClass("display_hide");
+	}else{
+		if($.inArray("1", gzyy)==-1){//蒙古语
+			$("#mn_gznr_title,#mn_gznr_content,#mn_gznr_img").addClass("display_hide");
+		}else{
+			$("#mn_gznr_title,#mn_gznr_content,#mn_gznr_img").removeClass("display_hide");
+		};
+		if($.inArray("2", gzyy)==-1){//中文
+			$("#zh_gznr_title,#zh_gznr_content,#zh_gznr_img").addClass("display_hide");
+		}else{
+			$("#zh_gznr_title,#zh_gznr_content,#zh_gznr_img").removeClass("display_hide");
+		};
+		if($.inArray("3", gzyy)==-1){//英文
+			$("#en_gznr_title,#en_gznr_content,#en_gznr_img").addClass("display_hide");
+		}else{
+			$("#en_gznr_title,#en_gznr_content,#en_gznr_img").removeClass("display_hide");
+		};
+	}
 	//描述语言
 	if(msyy == 0){//没有任何语言被选中
 		$("#mn_gzjs_title,#mn_gzjs_content,#mn_gzjs_img").removeClass("display_hide");
@@ -188,7 +286,14 @@ function doShowAllChar(){
 	$("#allcharstable table").show();
 	$("#allcharstable table tbody").show();
 	$("img[id^='charletters_img']").attr('src','./image/allclose.png');
-	
+	$("img[id^='topisolate_img']").attr('src','./image/lineclose.png');
+	$("img[id^='topinitial_img']").attr('src','./image/lineclose.png');
+	$("img[id^='topmedial_img']").attr('src','./image/lineclose.png');
+	$("img[id^='topfinal_img']").attr('src','./image/lineclose.png');
+	$("img[id^='bottomisolate_img']").attr('src','./image/lineclose.png');
+	$("img[id^='bottominitial_img']").attr('src','./image/lineclose.png');
+	$("img[id^='bottommedial_img']").attr('src','./image/lineclose.png');
+	$("img[id^='bottomfinal_img']").attr('src','./image/lineclose.png');
 	doSetIdleState();
 };
 
@@ -267,7 +372,40 @@ function doShowCharTable(flag,id){
 		}
 	}
 }
-
+//Dialog打开：导出文件
+function onOpenPrintFile(){
+    if(doCheckBusyState(true)){
+	    doDialogInformation(getlanguagetext(global_now_uilanguage,'uiid_txt_nowisdoing'), '系统提示');
+	    return;
+	};
+    //弹出画面
+	var dialogwindow = $("#printfile_dialog_display");
+    dialogwindow.dialog('close')
+    dialogwindow.dialog({
+        top:30,
+        title: '导出文件',
+        modal:true
+    });
+    dialogwindow.dialog('open');
+    //初始化：版本选择框，语言选择框
+    doInitializePrintFileSelectVersion();
+    doInitializePrintFileSelectLang();
+    doSetIdleState();
+}
+//导出文件画面：关闭
+function onClosePrintFile(){
+	document.getElementById("printfengpi").checked=true; 
+    $('#printfile_dialog_display').dialog('close');
+}
+//导出PDF
+function onClickPrintFile(){
+	//初始化
+	var lang    = $("#printfile_lang").combobox('getValue');
+	var version = $("#printfile_verison").combobox('getValue');
+	$("#printfileform").submit();
+	//关闭窗口 
+	onClosePrintFile();
+}
 //切换语言：内容语言
 function doRefreshDataBody(id,uiid){
 	var oid = $('#' + id);
@@ -386,10 +524,10 @@ function doInitializeLoadChars(isFromFirstCreate){
 											"<a href='javascript:void(0)' onclick='doShowCharTable(1," + i +")'><img src='./image/lineopen.png' class='deformationstop_img' id='topisolate_img" + i + "'/></a>" + 
 											"<a href='topology.php?unicode=" + v.unicode + "&position=isolate' class='pologyhref' target='_blank'><span id='uiid_lbl_dulixingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_dulixingshi') + "</span></a>" + 
 											"<span class='deformations_count'>（" + v.isolate.length + "）</span>" + 
-											//"<a href='javascript:void(0)' onclick='doShowCharTable(1," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottomisolate_img" + i + "'/></a>" + 
+											"<a href='javascript:void(0)' onclick='doShowCharTable(1," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottomisolate_img" + i + "'/></a>" + 
 									"</td>" +
 						    	 "</tr>" +
-								 "<tbody id='chartableisolate" + i + "' style='display:table-row-group'>" +
+								 "<tbody id='chartableisolate" + i + "' style='display:none'>" +
 								 "<tr>" +
 			    					"<td rowspan=" + bxrowspan + " class='charchoose'><span id='uiid_lbl_bianxingtitle' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_bianxingtitle') + " </span></td>"
 			    				 "</tr>" ;
@@ -402,9 +540,7 @@ function doInitializeLoadChars(isFromFirstCreate){
 				    					"<td class='title_dlrule' colspan=2><span id='uiid_lbl_dulixianshiguize' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_dulixianshiguize') + "</span></td>" +
 				    					"<td class='content_dlruleindex font_blue' colspan=1>"  + vv.ruleindex + "</td>" + 
 				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" + 
-				    					/**
 				    					"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='-1' rulefiled='-1' charcode='" + v.unicode + "' postype=0 ruletype=0 bxno='" + vv.bianxingno + "' ruleno=0 src='./image/editit.png'/></td>" +
-				    				 */
 				    				 "</tr>" +
 				    				 "<tr>" +
 				    					"<td rowspan=" + (vv.rules.length*11+1) + " class='title_czrule'><span id='uiid_lbl_cizhongguize' class='"+ uilangclass +"' uilang>" + getconvertedtext(global_now_uilanguage,getlanguagetext(global_now_uilanguage,'uiid_lbl_cizhongguize')) + "</span></td>" +
@@ -427,23 +563,17 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_mn " + mn_displaygzjs + "' id='mn_gzjs_title'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_content'>" + getconvertedtext('mn_rcn',vvv.description_mn_rcn)  + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=1 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_zh " + zh_displaygzjs + "' id='zh_gzjs_title'>ZH</td>" +
 			    		    					"<td class='content_zh mongolhorizontal " + zh_displaygzjs + " " + zh_gzjsbgcolor + "' id='zh_gzjs_content'>" + getconvertedtext('zh_rcn',vvv.description_zh_rcn)  + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + zh_displaygzjs + " " + zh_gzjsbgcolor + "' id='zh_gzjs_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=2 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_en " + en_displaygzjs + "' id='en_gzjs_title'>EN</td>" +
 			    		    					"<td class='content_en mongolhorizontal " + en_displaygzjs + " " + en_gzjsbgcolor + "' id='en_gzjs_content'>" + getconvertedtext('en_rus',vvv.description_en_rus)  + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + en_displaygzjs + " " + en_gzjsbgcolor + "' id='en_gzjs_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=3 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td rowspan=4 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
@@ -451,31 +581,23 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    					//"<td rowspan=3 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
 			    		    					"<td class='td_heightdefault title_mn " + mn_displaygznr + "' id='mn_gznr_title'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal " + mn_displaygznr + "' id='mn_gznr_content'>" + getconvertedtext('mn_rcn',vvv.rulevalue) + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + mn_displaygznr + "' id='mn_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=4 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_zh " + zh_displaygznr + "' id='zh_gznr_title'>ZH</td>" +
 			    		    					"<td class='content_zh mongolhorizontal " + zh_displaygznr + "' id='zh_gznr_content'>" + getconvertedtext('zh_rcn',vvv.rulevalue) + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + zh_displaygznr + "' id='zh_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=5 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_en " + en_displaygznr + "' id='en_gznr_title'>EN</td>" +
 			    		    					"<td class='content_en mongolhorizontal " + en_displaygznr + "' id='en_gznr_content'>" + getconvertedtext('en_rus',vvv.rulevalue) + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + en_displaygznr + "' id='en_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=6 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='title_rule'><span id='uiid_lbl_guizejuli' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizejuli') + "</span></td>" +
 			    		    					"<td class='td_heightdefault title_mn'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal'>" + getconvertedtext('mn_rcn',vvv.rulesample) +"</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=7 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>";
 						});
 				    });
@@ -490,10 +612,10 @@ function doInitializeLoadChars(isFromFirstCreate){
 										"<a href='javascript:void(0)' onclick='doShowCharTable(2," + i +")'><img src='./image/lineopen.png' class='deformationstop_img' id='topinitial_img" + i + "'/></a>" + 
 										"<a href='topology.php?unicode=" + v.unicode + "&position=initial' class='pologyhref' target='_blank'><span id='uiid_lbl_cishouxingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_cishouxingshi') + "</span></a>" + 
 										"<span class='deformations_count'>（" + v.initial.length + "）</span>" + 
-										//"<a href='javascript:void(0)' onclick='doShowCharTable(2," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottominitial_img" + i + "'/></a>" + 
+										"<a href='javascript:void(0)' onclick='doShowCharTable(2," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottominitial_img" + i + "'/></a>" + 
 									"</td>" +
 						    	 "</tr>" +
-								 "<tbody id='chartableinitial" + i + "' style='display:table-row-group'>" +
+								 "<tbody id='chartableinitial" + i + "' style='display:none'>" +
 								 "<tr>" +
 			    					"<td rowspan=" + bxrowspan + " class='charchoose'><span id='uiid_lbl_bianxingtitle' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_bianxingtitle') + " </span></td>"
 			    				 "</tr>" ;
@@ -505,10 +627,8 @@ function doInitializeLoadChars(isFromFirstCreate){
 				    				 "<tr class='singleshowguize'>" +
 				    					"<td class='title_dlrule' colspan=2><span id='uiid_lbl_dulixianshiguize' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_dulixianshiguize') + "</span></td>" +
 				    					"<td class='content_dlruleindex font_blue' colspan=1>"  + vv.ruleindex + "</td>" + 
-				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" +
-				    					/** 
+				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" + 
 				    					"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='-1' rulefiled='-1' charcode='" + v.unicode + "' postype=1 ruletype=0 bxno='" + vv.bianxingno + "' ruleno=0 src='./image/editit.png'/></td>" +
-				    				 */
 				    				 "</tr>" +
 				    				 "<tr>" +
 				    					"<td rowspan=" + (vv.rules.length*11+1) + " class='title_czrule'><span id='uiid_lbl_cizhongguize' class='"+ uilangclass +"' uilang>" + getconvertedtext(global_now_uilanguage,getlanguagetext(global_now_uilanguage,'uiid_lbl_cizhongguize')) + "</span></td>" +
@@ -531,23 +651,17 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_mn " + mn_displaygzjs + "' id='mn_gzjs_title'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_content'>" + getconvertedtext('mn_rcn',vvv.description_mn_rcn)  + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=1 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_zh " + zh_displaygzjs + "' id='zh_gzjs_title'>ZH</td>" +
 			    		    					"<td class='content_zh mongolhorizontal " + zh_displaygzjs + " " + zh_gzjsbgcolor + "' id='zh_gzjs_content'>" + getconvertedtext('zh_rcn',vvv.description_zh_rcn)  + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + zh_displaygzjs + " " + zh_gzjsbgcolor + "' id='zh_gzjs_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=2 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_en " + en_displaygzjs + "' id='en_gzjs_title'>EN</td>" +
 			    		    					"<td class='content_en mongolhorizontal " + en_displaygzjs + " " + en_gzjsbgcolor + "' id='en_gzjs_content'>" + getconvertedtext('en_rus',vvv.description_en_rus)  + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + en_displaygzjs + " " + en_gzjsbgcolor + "' id='en_gzjs_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=3 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td rowspan=4 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
@@ -555,33 +669,24 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    					//"<td rowspan=3 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
 			    		    					"<td class='td_heightdefault title_mn " + mn_displaygznr + "' id='mn_gznr_title'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal " + mn_displaygznr + "' id='mn_gznr_content'>" + getconvertedtext('mn_rcn',vvv.rulevalue) + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + mn_displaygznr + "' id='mn_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=4 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_zh " + zh_displaygznr + "' id='zh_gznr_title'>ZH</td>" +
 			    		    					"<td class='content_zh mongolhorizontal " + zh_displaygznr + "' id='zh_gznr_content'>" + getconvertedtext('zh_rcn',vvv.rulevalue) + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + zh_displaygznr + "' id='zh_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=5 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_en " + en_displaygznr + "' id='en_gznr_title'>EN</td>" +
 			    		    					"<td class='content_en mongolhorizontal " + en_displaygznr + "' id='en_gznr_content'>" + getconvertedtext('en_rus',vvv.rulevalue) + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + en_displaygznr + "' id='en_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=6 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='title_rule'><span id='uiid_lbl_guizejuli' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizejuli') + "</span></td>" +
 			    		    					"<td class='td_heightdefault title_mn'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal'>" + getconvertedtext('mn_rcn',vvv.rulesample) +"</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=7 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			   
-			    		    				*/
-			    		    			"</tr>";
+			    		    				"</tr>";
 						});
 				    });
 					tablehtml += "</tbody>";
@@ -595,10 +700,10 @@ function doInitializeLoadChars(isFromFirstCreate){
 										"<a href='javascript:void(0)' onclick='doShowCharTable(3," + i +")'><img src='./image/lineopen.png' class='deformationstop_img' id='topmedial_img" + i + "'/></a>" + 
 										"<a href='topology.php?unicode=" + v.unicode + "&position=medial' class='pologyhref' target='_blank'><span id='uiid_lbl_cizhongxingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_cizhongxingshi') + "</span></a>" + 
 										"<span class='deformations_count'>（" + v.medial.length + "）</span>" + 
-										//"<a href='javascript:void(0)' onclick='doShowCharTable(3," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottommedial_img" + i + "'/></a>" + 
+										"<a href='javascript:void(0)' onclick='doShowCharTable(3," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottommedial_img" + i + "'/></a>" + 
 									"</td>" +
 						    	 "</tr>" +
-								 "<tbody id='chartablemedial" + i + "' style='display:table-row-group'>" +
+								 "<tbody id='chartablemedial" + i + "' style='display:none'>" +
 								 "<tr>" +
 			    					"<td rowspan=" + bxrowspan + " class='charchoose'><span id='uiid_lbl_bianxingtitle' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_bianxingtitle') + " </span></td>"
 			    				 "</tr>" ;
@@ -610,10 +715,8 @@ function doInitializeLoadChars(isFromFirstCreate){
 				    				 "<tr class='singleshowguize'>" +
 				    					"<td class='title_dlrule' colspan=2><span id='uiid_lbl_dulixianshiguize' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_dulixianshiguize') + "</span></td>" +
 				    					"<td class='content_dlruleindex font_blue' colspan=1>"  + vv.ruleindex + "</td>" + 
-				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" +
-				    					/** 
+				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" + 
 				    					"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='-1' rulefiled='-1' charcode='" + v.unicode + "' postype=2 ruletype=0 bxno='" + vv.bianxingno + "' ruleno=0 src='./image/editit.png'/></td>" +
-				    				*/
 				    				 "</tr>" +
 				    				 "<tr>" +
 				    					"<td rowspan=" + (vv.rules.length*11+1) + " class='title_czrule'><span id='uiid_lbl_cizhongguize' class='"+ uilangclass +"' uilang>" + getconvertedtext(global_now_uilanguage,getlanguagetext(global_now_uilanguage,'uiid_lbl_cizhongguize')) + "</span></td>" +
@@ -636,23 +739,17 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_mn " + mn_displaygzjs + "' id='mn_gzjs_title'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_content'>" + getconvertedtext('mn_rcn',vvv.description_mn_rcn)  + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=1 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_zh " + zh_displaygzjs + "' id='zh_gzjs_title'>ZH</td>" +
 			    		    					"<td class='content_zh mongolhorizontal " + zh_displaygzjs + " " + zh_gzjsbgcolor + "' id='zh_gzjs_content'>" + getconvertedtext('zh_rcn',vvv.description_zh_rcn)  + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + zh_displaygzjs + " " + zh_gzjsbgcolor + "' id='zh_gzjs_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=2 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_en " + en_displaygzjs + "' id='en_gzjs_title'>EN</td>" +
 			    		    					"<td class='content_en mongolhorizontal " + en_displaygzjs + " " + en_gzjsbgcolor + "' id='en_gzjs_content'>" + getconvertedtext('en_rus',vvv.description_en_rus)  + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + en_displaygzjs + " " + en_gzjsbgcolor + "' id='en_gzjs_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=3 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td rowspan=4 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
@@ -660,31 +757,23 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    					//"<td rowspan=3 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
 			    		    					"<td class='td_heightdefault title_mn " + mn_displaygznr + "' id='mn_gznr_title'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal " + mn_displaygznr + "' id='mn_gznr_content'>" + getconvertedtext('mn_rcn',vvv.rulevalue) + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + mn_displaygznr + "' id='mn_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=4 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_zh " + zh_displaygznr + "' id='zh_gznr_title'>ZH</td>" +
 			    		    					"<td class='content_zh mongolhorizontal " + zh_displaygznr + "' id='zh_gznr_content'>" + getconvertedtext('zh_rcn',vvv.rulevalue) + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + zh_displaygznr + "' id='zh_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=5 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_en " + en_displaygznr + "' id='en_gznr_title'>EN</td>" +
 			    		    					"<td class='content_en mongolhorizontal " + en_displaygznr + "' id='en_gznr_content'>" + getconvertedtext('en_rus',vvv.rulevalue) + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + en_displaygznr + "' id='en_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=6 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='title_rule'><span id='uiid_lbl_guizejuli' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizejuli') + "</span></td>" +
 			    		    					"<td class='td_heightdefault title_mn'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal'>" + getconvertedtext('mn_rcn',vvv.rulesample) +"</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=7 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>";
 						});
 				    });
@@ -699,10 +788,10 @@ function doInitializeLoadChars(isFromFirstCreate){
 										"<a href='javascript:void(0)' onclick='doShowCharTable(4," + i +")'><img src='./image/lineopen.png' class='deformationstop_img' id='topfinal_img" + i + "'/></a>" + 
 										"<a href='topology.php?unicode=" + v.unicode + "&position=final' class='pologyhref' target='_blank'><span id='uiid_lbl_cimoxingshi' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_cimoxingshi') + "</span></a>" + 
 										"<span class='deformations_count'>（" + v.final.length + "）</span>" + 
-										//"<a href='javascript:void(0)' onclick='doShowCharTable(4," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottomfinal_img" + i + "'/></a>" + 
+										"<a href='javascript:void(0)' onclick='doShowCharTable(4," + i +")'><img src='./image/lineopen.png' class='deformationsbottom_img' id='bottomfinal_img" + i + "'/></a>" + 
 									"</td>" +
 						    	 "</tr>" +
-								 "<tbody id='chartablefinal" + i + "' style='display:table-row-group'>" +
+								 "<tbody id='chartablefinal" + i + "' style='display:none'>" +
 								 "<tr>" +
 			    					"<td rowspan=" + bxrowspan + " class='charchoose'><span id='uiid_lbl_bianxingtitle' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_bianxingtitle') + " </span></td>"
 			    				 "</tr>" ;
@@ -714,10 +803,8 @@ function doInitializeLoadChars(isFromFirstCreate){
 				    				 "<tr class='singleshowguize'>" +
 				    					"<td class='title_dlrule' colspan=2><span id='uiid_lbl_dulixianshiguize' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_dulixianshiguize') + "</span></td>" +
 				    					"<td class='content_dlruleindex font_blue' colspan=1>"  + vv.ruleindex + "</td>" + 
-				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" +
-				    					/** 
+				    					"<td class='content_rules' colspan=3>"  + getconvertedtext(global_now_uilanguage,vv.ruleisolate) + "</td>" + 
 				    					"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='-1' rulefiled='-1' charcode='" + v.unicode + "' postype=3 ruletype=0 bxno='" + vv.bianxingno + "' ruleno=0 src='./image/editit.png'/></td>" +
-				    				*/
 				    				 "</tr>" +
 				    				 "<tr>" +
 				    					"<td rowspan=" + (vv.rules.length*11+1) + " class='title_czrule'><span id='uiid_lbl_cizhongguize' class='"+ uilangclass +"' uilang>" + getconvertedtext(global_now_uilanguage,getlanguagetext(global_now_uilanguage,'uiid_lbl_cizhongguize')) + "</span></td>" +
@@ -740,55 +827,41 @@ function doInitializeLoadChars(isFromFirstCreate){
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_mn " + mn_displaygzjs + "' id='mn_gzjs_title'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_content'>" + getconvertedtext('mn_rcn',vvv.description_mn_rcn)  + "</td>" +
-			    		    					
-			    		    					//"<td class='content_img td_heightdefault " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_img'></td>" +
-			    		    				
+			    		    					"<td class='content_img td_heightdefault " + mn_displaygzjs + " " + mn_gzjsbgcolor + "' id='mn_gzjs_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=1 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_zh " + zh_displaygzjs + "' id='zh_gzjs_title'>ZH</td>" +
 			    		    					"<td class='content_zh mongolhorizontal " + zh_displaygzjs + " " + zh_gzjsbgcolor + "' id='zh_gzjs_content'>" + getconvertedtext('zh_rcn',vvv.description_zh_rcn)  + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + zh_displaygzjs + " " + zh_gzjsbgcolor + "' id='zh_gzjs_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=2 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_en " + en_displaygzjs + "' id='en_gzjs_title'>EN</td>" +
 			    		    					"<td class='content_en mongolhorizontal " + en_displaygzjs + " " + en_gzjsbgcolor + "' id='en_gzjs_content'>" + getconvertedtext('en_rus',vvv.description_en_rus)  + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + en_displaygzjs + " " + en_gzjsbgcolor + "' id='en_gzjs_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=3 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td rowspan=4 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
 				    		    			"<tr>" +
 			    		    					//"<td rowspan=3 class='title_rule'><span id='uiid_lbl_guizeneirong' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizeneirong') + "</span></td>" +
-			    		    					"<td rowspan=3  class='td_heightdefault title_mn " + mn_displaygznr + "' id='mn_gznr_title'>MN</td>" +
-			    		    					"<td rowspan=3  class='content_mn mongolnormal " + mn_displaygznr + "' id='mn_gznr_content'>" + getconvertedtext('mn_rcn',vvv.rulevalue) + "</td>" +
-			    		    					/**
+			    		    					"<td class='td_heightdefault title_mn " + mn_displaygznr + "' id='mn_gznr_title'>MN</td>" +
+			    		    					"<td class='content_mn mongolnormal " + mn_displaygznr + "' id='mn_gznr_content'>" + getconvertedtext('mn_rcn',vvv.rulevalue) + "</td>" +
 			    		    					"<td class='content_img td_heightdefault " + mn_displaygznr + "' id='mn_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=4 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_zh " + zh_displaygznr + "' id='zh_gznr_title'>ZH</td>" +
 			    		    					"<td class='content_zh mongolhorizontal " + zh_displaygznr + "' id='zh_gznr_content'>" + getconvertedtext('zh_rcn',vvv.rulevalue) + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + zh_displaygznr + "' id='zh_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=5 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='td_heightdefault title_en " + en_displaygznr + "' id='en_gznr_title'>EN</td>" +
 			    		    					"<td class='content_en mongolhorizontal " + en_displaygznr + "' id='en_gznr_content'>" + getconvertedtext('en_rus',vvv.rulevalue) + "</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault " + en_displaygznr + "' id='en_gznr_img'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=6 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>" +
 			    		    				"<tr>" +
 			    		    					"<td class='title_rule'><span id='uiid_lbl_guizejuli' class='"+ uilangclass +"' uilang>" + getlanguagetext(global_now_uilanguage,'uiid_lbl_guizejuli') + "</span></td>" +
 			    		    					"<td class='td_heightdefault title_mn'>MN</td>" +
 			    		    					"<td class='content_mn mongolnormal'>" + getconvertedtext('mn_rcn',vvv.rulesample) +"</td>" +
-			    		    					/**
 			    		    					"<td class='content_img td_heightdefault'><img class='img_edit' charindex='" + i + "' postindex='" + ii + "' ruleindex='" + iii + "' rulefiled=7 charcode='" + v.unicode + "' postype=0 ruletype=1 bxno='" + vv.bianxingno + "' ruleno='" + vvv.ruleno + "' src='./image/editit.png'/></td>" +
-			    		    				*/
 			    		    				"</tr>";
 						});
 				    });
@@ -799,7 +872,16 @@ function doInitializeLoadChars(isFromFirstCreate){
 		});
     tablehtml += "</td></tr></table>";
     allcharframe.append(tablehtml);
-   
+    //弹出画面：发布意见
+    $(".img_edit").click(doClickEditRuleButton);
+    $('#publishproposal_closedialog_btn').click(onClickClosePublishproposal);
+    $('#publishproposal_send_btn').click(onClickSendPubLish);
+    //统计信息
+    allcharframe.attr('bianx_num',bianx_num);
+    allcharframe.attr('guize_dl_num',bianx_num);
+    allcharframe.attr('guize_cz_num',guize_cz_num);
+    allcharframe.attr('guize_cz_default_num',guize_cz_default_num);
+    allcharframe.attr('guize_cz_force_num',guize_cz_force_num);
     //////////绑定事件//////////
     var tablechoose = $('.charchoose,.charletter,.title_czrule,.title_dlrule,.numbercharno,.content_dlruleindex,.content_czruleindex,.title_rule,.title_mn,.title_zh,.title_en,.content_mn,.content_zh,.content_en,.content_rules');//表格变形区域
     //背景色变换:点击
@@ -984,6 +1066,11 @@ function doClickEditRuleButton(){
     onClickCreateCode();
 }
 
+//关闭意见反馈Dialog
+function onClickClosePublishproposal(){
+    $('#publishproposal_dialog_display').dialog('close');
+}
+
 //返回规则编号颜色
 function getRuleIDColor(item){
   if(item.isexcluderule == '1') {
@@ -995,6 +1082,30 @@ function getRuleIDColor(item){
   };
 }
 
+//规则统计弹出画面：打开
+function onClickOpenTotal(){
+	var allcharframe = $('#allcharframework');
+	$("#chars_num,#bianxing_num,#guize_duli_num,#guize_cizhong_num,#guize_cizhong_default_num,#guize_cizhong_force_num").empty();
+	$('#chars_num').append(all_char_list.charlist.length);
+    $('#bianxing_num').append(allcharframe.attr('bianx_num'));
+    $('#guize_duli_num').append(allcharframe.attr('guize_dl_num'));
+    $('#guize_cizhong_num').append(allcharframe.attr('guize_cz_num'));
+    $('#guize_cizhong_default_num').append(allcharframe.attr('guize_cz_default_num'));
+    $('#guize_cizhong_force_num').append(allcharframe.attr('guize_cz_force_num'));
+    //弹出画面
+	var dialogwindow = $("#total_dialog_display");
+    dialogwindow.dialog('close')
+    dialogwindow.dialog({
+        top:30,
+        title: '规则统计',
+        modal:true
+    });
+    dialogwindow.dialog('open');
+}
+//规则统计弹出画面：关闭
+function onClickCloseTotal(){
+    $('#total_dialog_display').dialog('close');
+}
 //按钮事件：意见反馈
 function onClickSendPubLish(){
 	//判断是否重复进入
@@ -1002,6 +1113,52 @@ function onClickSendPubLish(){
 		doDialogInformation(getlanguagetext(global_now_uilanguage,'uiid_txt_nowisdoing'), '系统提示');
 		return;
 	};
+	//初始化变量
+	var dialogcontent=$('#dialog_allcharsframe');
+	var useralias= $('#mail_name').val().trim();
+	var usermail = $('#mail_address').val().trim();
+	var usertext = $('#mail_content').val().trim();
+	var capcode = $('#mail_code').val().trim();
+	//有效性判断：用户名称（不能有特殊转移符）
+	if(useralias.length == 0){
+	   doSetIdleState();
+       doDialogInformation('请输入您的姓名！','系统提示');
+       return false;
+	}
+	var reg = /^(([^\^\.<>%&',;=?$"':#@!~\]\[{}\\/`\|])*)$/; 
+    if (!reg.test(useralias)) {
+	   doSetIdleState();
+       doDialogInformation('姓名不可以有特殊字符，请重新填写！','系统提示');
+       return false;
+  	}
+	//有效性判断：邮件地址
+	if(usermail.length == 0){
+	    doSetIdleState();
+		doDialogInformation('请输入您的邮箱件地址！','系统提示');
+		return false;
+	}
+	var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+    if (!reg.test(usermail)) {
+	   doSetIdleState();
+       doDialogInformation('邮箱格式不正确，请重新填写！','系统提示');
+       return false;
+  	}
+	//有效性判断：用户意见
+	if(usertext.length==0){
+		doSetIdleState();
+		doDialogInformation('请输入您要发表的意见内容！','系统提示');
+		return false;
+	}
+	//有效性判断：验证码
+	if(capcode.length==0){
+		doSetIdleState();
+		doDialogInformation('请输入验证码！','系统提示');
+		return false;
+	}
+	
+	//将用户名和用户地址写入网页元素属性里
+	dialogcontent.attr('useralias',useralias);
+	dialogcontent.attr('usermail',usermail);
 	
 	//与服务器通信
 	var unicoce   = dialogcontent.attr("unicoce");
@@ -1009,11 +1166,29 @@ function onClickSendPubLish(){
 	var gzno      = dialogcontent.attr("gzno");;
 	var isduli    = dialogcontent.attr("isduli");
 	$.ajax({
-		
+	    url:'./doadvice.php',
 	    type:'post',
 	    dataType:'json',
 	    data:{version:all_char_list.version,unicoce:unicoce,bxno:bxno,gzno:gzno,isduli:isduli,useralias:useralias,usermail:usermail,usertext:usertext,capcode:capcode},
-	   
+	    error:function(){
+	       doSetIdleState();
+	       doDialogInformation('error','系统提示');
+	    },
+	    success:function(data){
+	       doSetIdleState();
+	       if(data.result==true){
+	       	    var title = '系统提示';
+	       	    var msg   = '提交意见成功，谢谢您的支持！ <br>' + 
+	       	    	        '用户编号：' + data.uscode + '<br>' +
+	       	    		    '意见编号：' + data.qacode;
+	       		doDialogInformation(msg ,title,function(){ $('#publishproposal_dialog_display').dialog('close'); });
+	       }else{
+	       	   	var title = '系统提示';
+	       	   	var msg   = '抱歉，提交意见失败！<br>' + 
+	       	   	            data.rsmsg + '[' + data.rscode + ']';
+	       		doDialogInformation(msg, title);
+	       }
+	    }
 	});
 }
 
@@ -1163,6 +1338,93 @@ function doShowBusyDialog(ishow) {
     };
 };
 
+//初始化版本列表选择框
+function doInitializeSelectVersion(){
+	var versioncombobox = $('#version_select');
+    if (versioncombobox.length<=0){  return true; };
+    versioncombobox.combobox({
+        mode: 'local',
+        multiple: false,
+        editable: false,
+        valueField: 'id',
+        textField: 'name',
+        value:getDefaultDataVersionID(),
+        data:global_data_version_list,
+        onSelect: function (record) {
+          //版本未变动
+          if(all_char_list.version==record.name){ return true; };
+          //检查忙碌状态
+          if(doCheckBusyState(true)){
+            doDialogInformation(getlanguagetext(global_now_uilanguage,'uiid_txt_nowisdoing'), '系统提示');
+            return false;
+          };
+          //为了能显示动画，也需要timer事件
+          setTimeout('doChangeDataVersion("'+all_char_list.version+'","'+record.name+'")',200);
+        }
+    });
+};
+//切换版本
+function doChangeDataVersion(fmVersion,toVersion){
+  $('#dataversionscriptitem').remove();
+  doLoadScript('dataversionscriptitem','./data/xunifont_allchars_'+toVersion+'.js',function(){
+	//恢复check默认值
+	doInitializeDefautCheck();
+    //初始化字符
+    doInitializeLoadChars(true);
+    doSetIdleState();
+  });
+};
+
+//初始化语言列表选择框：导出文件
+function doInitializePrintFileSelectLang(){
+	var versioncombobox = $('#printfile_lang');
+    if (versioncombobox.length<=0){  return true; };
+    versioncombobox.combobox({
+        mode: 'local',
+        multiple: false,
+        editable: false,
+        valueField: 'id',
+        textField: 'name',
+        value: 'zh_rcn',
+        data:[{ 'id':'zh_rcn', 'name': '中文' },{ 'id':'mn_rcn', 'name': '蒙文' },{ 'id':'en_rus', 'name': '英文' }],
+        onSelect: function (record) {
+
+        }
+    });
+};
+//初始化版本列表选择框：导出文件
+function doInitializePrintFileSelectVersion(){
+	var versioncombobox = $('#printfile_verison');
+    if (versioncombobox.length<=0){  return true; };
+    versioncombobox.combobox({
+        mode: 'local',
+        multiple: false,
+        editable: false,
+        valueField: 'name',
+        textField: 'name',
+        value:global_data_version_default,
+        data:global_data_version_list,
+        onSelect: function (record) {
+
+        }
+    });
+};
+
+//获取最新版本号的name值,用于默认文件
+function getDefaultDataVersionName(){
+  return global_data_version_default;
+};
+
+//获取最新版本号的ID值,用于默认文件
+function getDefaultDataVersionID(){
+  var rs=1;
+  $.each(global_data_version_list, function (n, value) {
+    if(value.name==global_data_version_default){
+      rs = value.id;
+    };
+  });
+  return rs;
+};
 //获取网址参数数组
 function GetRequest(){
   var url = location.search;
@@ -1175,6 +1437,24 @@ function GetRequest(){
     }
   }
   return theRequest; 
+};
+
+//动态加载脚本（支持跨域）
+function doLoadScript(id,url,callback){
+	var head = document.head || document.getElementsByTagName('head')[0];
+	var script = document.createElement('script');
+	script.type= 'text/javascript';
+	script.id= id;
+	script.src= url;
+	script.onload = script.onreadystatechange = function() {
+	  if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete" ) {
+	  	//回调：成功
+	  	callback();
+	    //Handle memory leak in IE 
+	    script.onload = script.onreadystatechange = null;  
+	  }
+	};
+	head.appendChild(script);
 };
 
 //初始化CheckBox默认值
