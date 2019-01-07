@@ -1,6 +1,6 @@
 /****************************/
 //全局通用变量
-var global_now_uilanguage = 'zh_rcn';//界面语言
+var global_now_uilanguage = '_rcn';//界面语言
 var global_def_rulelanguage = ['zh_rcn','mn_rcn','en_rus'];//['zh_rcn','mn_rcn','en_rus'];//规则内容语言
 var global_def_desclanguage = ['zh_rcn','mn_rcn','en_rus'];//['zh_rcn','mn_rcn','en_rus'];//规则描述语言
 var global_spinner = null;
